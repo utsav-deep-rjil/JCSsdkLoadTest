@@ -1,0 +1,6 @@
+target/
+.project
+.settings/
+
+/bin/
+src/main/resources/config.properties
