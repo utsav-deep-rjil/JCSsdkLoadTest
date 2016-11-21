@@ -46,7 +46,7 @@ public class JCSComputeTestNegativeCases {
     
 
     @Rule
-    public final ExpectedException expectedException = ExpectedException.none();
+    public ExpectedException expectedException = ExpectedException.none();
 
     @BeforeClass
     public static void setUpBeforeClass() throws PropertyNotFoundException {
@@ -60,8 +60,7 @@ public class JCSComputeTestNegativeCases {
 
 
     @Test
-    public void createAndDeleteTest() {
-        try {
+    public void createAndDeleteTest() throws Exception{
 
             // Create empty volume test
 
@@ -92,20 +91,14 @@ public class JCSComputeTestNegativeCases {
                     equalTo(initialSnapshotCount+1));
 
 
-            while(!testUtils.getSnapshotStatus(createSnapshotResult.getSnapshot().getSnapshotId()).equals("created"));
+            while(!testUtils.getSnapshotStatus(createSnapshotResult.getSnapshot().getSnapshotId()).equals("completed"))
+                ;
 
             DeleteVolumeRequest deleteVolumeRequest = new DeleteVolumeRequest().withVolumeId(createVolumeResult.getVolume().getVolumeId());
             jcs.deleteVolume(deleteVolumeRequest);
 
-            initialSnapshotCount = testUtils.getSnapshotsCount();
 
             initialVolumeCount = testUtils.getVolumesCount();
-
-            createSnapshotRequest = new CreateSnapshotRequest()
-                    .withVolumeId(createVolumeResult.getVolume().getVolumeId());
-            createSnapshotResult = jcs.createSnapshot(createSnapshotRequest);
-
-            log.info(createSnapshotResult.toString());
 
             // create volume with snapshotId and size ( < snapshot size) test
 
@@ -117,8 +110,7 @@ public class JCSComputeTestNegativeCases {
 
             expectedException.expect(HttpException.class);
             createVolumeResult = jcs.createVolume(createVolumeRequest);
-
-            log.info(createVolumeResult.toString());
+            
 
             volumeCountAfterCreation = testUtils.getVolumesCount();
             assertThat("Create volume negative test 2: volumes count: ", initialVolumeCount,
@@ -159,7 +151,6 @@ public class JCSComputeTestNegativeCases {
             deleteVolumeResult = jcs.deleteVolume(deleteVolumeRequest);
             log.info(deleteVolumeResult.toString());
 
-            expectedException.expect(HttpException.class);
             while (testUtils.getVolumeStatus(createVolumeResult.getVolume().getVolumeId()).equals("deleting"))
                 ;
             int finalVolumeCount2 = testUtils.getVolumesCount();
@@ -171,6 +162,8 @@ public class JCSComputeTestNegativeCases {
                 ;
             DeleteSnapshotRequest deleteSnapshotRequest = new DeleteSnapshotRequest()
                     .withSnapshotId(createSnapshotResult.getSnapshot().getSnapshotId());
+
+            expectedException.expect(HttpException.class);
             DeleteSnapshotResult deleteSnapshotResult = jcs.deleteSnapshot(deleteSnapshotRequest);
             log.info(deleteSnapshotResult.toString());
 
@@ -221,10 +214,7 @@ public class JCSComputeTestNegativeCases {
             assertThat("describe snapshot negative test 2: random strings: ",
                     describeSnapshotsResult.getSnapshots().size(), equalTo(0));
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
+        
 
     }
 
