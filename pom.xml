@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.jcs.sbs</groupId>
-	<artifactId>JCSsdkLoadTest</artifactId>
+	<artifactId>JCSsdkTest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>JCSsdkLoadTest</name>
+	<name>JCSsdkTest</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -23,9 +23,10 @@
 		</dependency>
 		<dependency>
 			<groupId>com.jcs.sbs</groupId>
-			<artifactId>JCSsdk1</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<artifactId>jcs-java-sdk-sbs</artifactId>
+			<version>1.0.0</version>
 			<scope>compile</scope>
 		</dependency>
+
 	</dependencies>
 </project>

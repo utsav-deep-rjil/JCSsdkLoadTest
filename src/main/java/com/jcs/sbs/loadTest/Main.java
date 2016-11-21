@@ -1,14 +1,16 @@
 package com.jcs.sbs.loadTest;
 
-public class App {
+import com.jcs.sbs.exceptions.PropertyNotFoundException;
+
+public class Main {
 
     
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws PropertyNotFoundException{
 
 
     	System.out.println(args.toString());
-		int threads = 100, volumeSize = 10;
+		int threads = 10, volumeSize = 10;
     	if(args.length > 0){
     		threads = Integer.parseInt(args[0]);
     	}
